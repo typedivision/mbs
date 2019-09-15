@@ -8,4 +8,4 @@ IMAGE_LINGUAS = ""
 
 DEPENDS += "qemu-native qemu-helper-native coreutils-native"
 
-CORE_IMAGE_BASE_INSTALL = "base-files base-passwd busybox"
+CORE_IMAGE_BASE_INSTALL = "base-files base-passwd busybox neoinit"

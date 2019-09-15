@@ -1,0 +1,15 @@
+#!/bin/sh
+overlay=/ramfs/overlay
+volatile=/ramfs/volatile
+
+for dir in etc .etc.work var .var.work; do
+  mkdir -p $overlay/$dir
+done
+mount -t overlay overlay /etc -o lowerdir=/etc,upperdir=$overlay/etc,workdir=$overlay/.etc.work
+mount -t overlay overlay /var -o lowerdir=/var,upperdir=$overlay/var,workdir=$overlay/.var.work
+
+for dir in var.volatile .var.volatile.work; do
+  mkdir -p $volatile/$dir
+done
+mount -t overlay overlay /var/volatile \
+  -o lowerdir=/var/volatile,upperdir=$volatile/var.volatile,workdir=$volatile/.var.volatile.work

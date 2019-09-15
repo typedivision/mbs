@@ -1,4 +1,6 @@
 # fstab - filsystem mount configuration
 
-tmpfs  /tmp  tmpfs  mode=0755,nodev,nosuid,noatime,size=1M  0  0
-tmpfs  /run  tmpfs  mode=0755,nodev,nosuid,noexec,size=1M   0  0
+tmpfs  /tmp            tmpfs  mode=0755,nodev,nosuid,noatime,size=1M  0  0
+tmpfs  /run            tmpfs  mode=0755,nodev,nosuid,noexec,size=1M   0  0
+tmpfs  /ramfs/overlay  tmpfs  nodev,nosuid,noexec,noatime,size=5M     0  0
+tmpfs  /ramfs/volatile tmpfs  nodev,nosuid,noexec,noatime,size=5M     0  0

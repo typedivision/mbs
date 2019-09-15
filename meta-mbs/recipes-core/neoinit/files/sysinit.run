@@ -1,0 +1,9 @@
+#!/bin/sh
+mount -t proc proc /proc -o nosuid,noexec,nodev
+mount -t sysfs sysfs /sys -o nosuid,noexec,nodev
+if ! [ -e /dev/null ]; then
+  mount -t devtmpfs devtmpfs /dev -o nosuid,noexec
+fi
+mount -a
+
+hostname -F /etc/hostname
