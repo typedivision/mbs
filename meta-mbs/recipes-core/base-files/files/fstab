@@ -1,0 +1,4 @@
+# fstab - filsystem mount configuration
+
+tmpfs  /tmp  tmpfs  mode=0755,nodev,nosuid,noatime,size=1M  0  0
+tmpfs  /run  tmpfs  mode=0755,nodev,nosuid,noexec,size=1M   0  0
