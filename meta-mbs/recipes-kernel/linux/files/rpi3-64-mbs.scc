@@ -1,0 +1,2 @@
+define KMACHINE rpi3-64
+define KTYPE mbs
