@@ -26,4 +26,4 @@ do_deploy () {
 }
 
 addtask deploy before do_build after do_install
-do_deploy[dirs] += "${DEPLOYDIR}/${PN}"
+do_deploy[cleandirs] += "${DEPLOYDIR}/${PN}"
