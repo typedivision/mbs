@@ -8,4 +8,13 @@ IMAGE_LINGUAS = ""
 
 DEPENDS += "coreutils-native"
 
-CORE_IMAGE_BASE_INSTALL = "base-files base-passwd busybox neoinit"
+CORE_IMAGE_BASE_INSTALL = " \
+    base-files \
+    base-passwd \
+    busybox \
+    neoinit \
+    kernel-modules \
+    linux-firmware-rpidistro-bcm43430 \
+    wpa-supplicant \
+    wpa-supplicant-passphrase \
+"

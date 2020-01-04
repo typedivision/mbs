@@ -14,8 +14,6 @@ S = "${WORKDIR}/git"
 inherit allarch
 
 do_install () {
-    install -Dm644 LICENCE.broadcom_bcm43xx -t ${D}${nonarch_base_libdir}/firmware/
-
     install -d ${D}${nonarch_base_libdir}/firmware/brcm/
     install -m644 brcm/brcmfmac43430-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/
     install -m644 brcm/brcmfmac43430-sdio.txt ${D}${nonarch_base_libdir}/firmware/brcm/
