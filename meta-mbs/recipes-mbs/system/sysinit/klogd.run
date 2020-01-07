@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /bin/busybox klogd -c 4 -n

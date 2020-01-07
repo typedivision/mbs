@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /bin/busybox syslogd -n -s 1000 -b 2 -D -O /var/log/syslog
