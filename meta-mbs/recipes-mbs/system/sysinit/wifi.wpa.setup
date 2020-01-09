@@ -1,0 +1,19 @@
+#!/bin/sh
+pidfile=/var/run/wpa_supplicant.pid
+
+if ! [ "$CONFIG_NET_WIFI_SSID" ] || ! [ "$CONFIG_NET_WIFI_PASS" ]; then
+  logger "$NI_SVC: no ssid or passphrase config found"
+  exit 1
+fi
+
+modprobe brcmfmac
+
+echo "$CONFIG_NET_WIFI_PASS" | wpa_passphrase "$CONFIG_NET_WIFI_SSID" > /etc/wpa_supplicant.conf
+
+rm -rf $pidfile
+wpa_supplicant -B -P $pidfile -D nl80211 -i wlan0 -c /etc/wpa_supplicant.conf
+
+if ! [ -e $pidfile ]; then
+  logger -p err "$NI_SVC: wpa_supplicant failed"
+  exit 1
+fi

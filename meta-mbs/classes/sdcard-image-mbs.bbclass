@@ -6,6 +6,9 @@ IMAGE_TYPEDEP_rpi-sdimg = "squashfs-xz"
 # Boot partition size [in KiB] (will be rounded up to IMAGE_ALIGNMENT)
 BOOT_SPACE = "16384"
 
+# Data partition size [in KiB]
+DATA_SPACE = "8172"
+
 # Set alignment to 4MB [in KiB]
 IMAGE_ALIGNMENT = "4096"
 
@@ -28,15 +31,15 @@ IMAGE_CMD_rpi-sdimg () {
     # Align partitions
     BOOT_SPACE_ALIGNED=$(expr ${BOOT_SPACE} + ${IMAGE_ALIGNMENT} - 1)
     BOOT_SPACE_ALIGNED=$(expr ${BOOT_SPACE_ALIGNED} - ${BOOT_SPACE_ALIGNED} % ${IMAGE_ALIGNMENT})
-    SDIMG_SIZE=$(expr ${IMAGE_ALIGNMENT} + ${BOOT_SPACE_ALIGNED})
+    SDIMG_SIZE=$(expr ${IMAGE_ALIGNMENT} + ${BOOT_SPACE_ALIGNED} + ${DATA_SPACE})
 
     # Initialize sdcard image file
-    echo "Creating filesystem with Boot partition ${BOOT_SPACE_ALIGNED} KiB"
     dd if=/dev/zero of=${SDIMG} bs=1024 count=0 seek=${SDIMG_SIZE}
 
     # Create partition table
     parted -s ${SDIMG} mklabel msdos
-    parted -s ${SDIMG} -- unit KiB mkpart primary fat32 ${IMAGE_ALIGNMENT} -1s
+    parted -s ${SDIMG} unit KiB mkpart primary fat32 ${IMAGE_ALIGNMENT} $(expr ${BOOT_SPACE_ALIGNED} + ${IMAGE_ALIGNMENT})
+    parted -s ${SDIMG} -- unit KiB mkpart primary ext2 $(expr ${BOOT_SPACE_ALIGNED} + ${IMAGE_ALIGNMENT}) -1s
 
     # Create a vfat image
     BOOT_BLOCKS=$(parted -s ${SDIMG} unit b print | awk '/ 1 / { print substr($4, 1, length($4 -1)) / 512 / 2 }')
@@ -71,6 +74,11 @@ IMAGE_CMD_rpi-sdimg () {
     mcopy -v -i ${WORKDIR}/boot.img ${WORKDIR}/image-version-info.txt :: || \
         bbfatal "mcopy cannot copy image-version-info.txt into boot.img"
 
+    # Create data partition image
+    dd if=/dev/zero of=${WORKDIR}/data.img bs=1024 count=0 seek=${DATA_SPACE}
+    mkfs.ext4 -L "data" ${WORKDIR}/data.img
+
     # Burn Partitions
     dd if=${WORKDIR}/boot.img of=${SDIMG} conv=notrunc seek=1 bs=$(expr ${IMAGE_ALIGNMENT} \* 1024)
+    dd if=${WORKDIR}/data.img of=${SDIMG} conv=notrunc seek=1 bs=$(expr ${IMAGE_ALIGNMENT} \* 1024 + ${BOOT_SPACE_ALIGNED} \* 1024)
 }

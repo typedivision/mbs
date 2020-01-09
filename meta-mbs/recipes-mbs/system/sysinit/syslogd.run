@@ -1,2 +1,6 @@
 #!/bin/sh
+if ! [ -e /var/log/bootlog ]; then
+  sleep 1
+  dmesg -c > /var/log/bootlog
+fi
 exec /bin/busybox syslogd -n -s 1000 -b 2 -D -O /var/log/syslog

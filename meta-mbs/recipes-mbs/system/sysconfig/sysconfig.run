@@ -1,0 +1,37 @@
+#!/bin/sh
+data=/media/data
+
+if [ -f $data/config/system.config ]; then
+  cp $data/config/system.config /etc/system.config
+fi
+touch /etc/system.config
+
+if [ -f /etc/sysconf/system.kconfig ]; then
+  cd /etc/sysconf
+  cp /etc/system.config .config
+  kconfig-conf --olddefconfig system.kconfig >/dev/null
+  mv .config /etc/system.config
+fi
+
+if ! [ -f $data/config/system.config ]; then
+  mkdir -p $data/config
+  if [ -d $data/config ]; then
+    cp /etc/system.config $data/config/system.config
+    sync
+  fi
+fi
+
+while read -r conf; do
+  if ! echo "$conf" | grep -q '^[a-zA-Z0-9_]\+ *='; then
+    continue
+  fi
+  key=$(echo "$conf" | cut -d= -f1 | sed -e 's/ *$//')
+  val=$(echo "$conf" | cut -d= -f2 | sed -e 's/^ *"\? *//' -e 's/ *"\? *$//')
+  if echo "$val" | grep -q '[^[:print:]]\|\$'; then
+    continue
+  fi
+  if echo "$val" | sed 's/\\.//g' | grep -q '"'; then
+    continue
+  fi
+  echo "$key=$val"
+done < /etc/system.config > /etc/neoinit/neo.conf

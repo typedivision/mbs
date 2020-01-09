@@ -1,0 +1,27 @@
+menu "Network"
+
+config NET_WIFI_SSID
+    string "wifi ssid"
+    default ""
+    help
+      The ssid to connect wifi interface to.
+
+config NET_WIFI_PASS
+    string "wifi passphrase"
+    default ""
+    help
+      Passphrase for wifi connection.
+
+config NET_ETH0_ADDR
+    string "eth0 ip address"
+    default "192.168.1.10"
+    help
+      Static ip address for the interface eth0.
+
+config NET_ETH0_MASK
+    string "eth0 subnet prefix"
+    default "24"
+    help
+      Subnet prefix length for the interface eth0.
+
+endmenu

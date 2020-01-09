@@ -1,0 +1,13 @@
+#!/bin/sh
+ip addr add 127.0.0.1/8 dev lo
+ip link set lo up
+
+if ! [ "$CONFIG_NET_ETH0_ADDR" ] || ! [ "$CONFIG_NET_ETH0_MASK" ]; then
+  logger "$NI_SVC: no ip/netmask config found"
+  logger "$NI_SVC: disable usb devices"
+  echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower
+  exit
+fi
+
+ip addr add $CONFIG_NET_ETH0_ADDR/$CONFIG_NET_ETH0_MASK dev eth0
+ip link set eth0 up

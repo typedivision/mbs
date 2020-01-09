@@ -6,11 +6,10 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 SRC_URI = " \
   git://github.com/typedivision/${BPN}.git;branch=v${PV} \
   file://sysinit.run \
-  file://ramfs.run \
   file://getty.run \
 "
 
-SRCREV = "ff13a4393d8a15f85a569d7f01d3a8670e02146b"
+SRCREV = "a499aeb3fef37b850fdde354d92b9f0d309667cb"
 
 S = "${WORKDIR}/git"
 
@@ -30,13 +29,11 @@ do_install () {
     echo "default.sys" >> ${D}/etc/neoinit/default/depends
     echo "default.usr" >> ${D}/etc/neoinit/default/depends
 
+    install -d ${D}/media/overlay
+    install -d ${D}/media/volatile
+    install -d ${D}/media/data
     install -Dm755 ${WORKDIR}/sysinit.run ${D}/etc/neoinit/sysinit/run
     echo "sysinit" >> ${D}/etc/neoinit/boot/depends
-
-    install -d ${D}/ramfs/overlay
-    install -d ${D}/ramfs/volatile
-    install -Dm755 ${WORKDIR}/ramfs.run ${D}/etc/neoinit/ramfs/run
-    echo "ramfs" >> ${D}/etc/neoinit/boot/depends
 
     install -Dm755 ${WORKDIR}/getty.run ${D}/etc/neoinit/getty/run
     touch ${D}/etc/neoinit/getty/respawn
@@ -45,7 +42,7 @@ do_install () {
     ln -s /sbin/neoinit ${D}/sbin/init
 }
 
-FILES_${PN} += "/ramfs"
+FILES_${PN} += "/media"
 
 pkg_postinst_${PN} () {
 #!/bin/sh -e

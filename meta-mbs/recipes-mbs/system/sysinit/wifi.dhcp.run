@@ -1,0 +1,16 @@
+#!/bin/sh
+for check_wpa_up in $(seq 20); do
+  wpa=$(neorc -s wifi.wpa 2>/dev/null)
+  if [ "$wpa" = active ]; then
+    wpa_up=1
+    break
+  else
+    sleep 1
+  fi
+done
+
+if ! [ "$wpa_up" ]; then
+  exit
+fi
+
+exec /bin/busybox udhcpc -f -i wlan0 -S &>/dev/null

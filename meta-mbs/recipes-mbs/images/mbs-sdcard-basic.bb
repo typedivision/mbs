@@ -12,10 +12,18 @@ CORE_IMAGE_BASE_INSTALL = " \
     base-files \
     base-passwd \
     busybox \
+    busybox-udhcpc \
     neoinit \
     kernel-modules \
     linux-firmware-rpidistro-bcm43430 \
     wpa-supplicant \
     wpa-supplicant-passphrase \
     sysinit \
+    sysconfig \
 "
+
+rootfs_cleanup () {
+    rm -rf ${IMAGE_ROOTFS}/boot/*
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "rootfs_cleanup;"

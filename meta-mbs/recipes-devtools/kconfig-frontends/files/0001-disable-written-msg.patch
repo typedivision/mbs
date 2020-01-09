@@ -1,0 +1,25 @@
+From 2da69598e5f0ebbf105509d34ebc6c1ae056012f Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Sat, 11 Jan 2020 20:56:10 +0000
+Subject: [PATCH] disable written msg
+
+---
+ libs/parser/confdata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libs/parser/confdata.c b/libs/parser/confdata.c
+index 297b079..4e2fb3c 100644
+--- a/libs/parser/confdata.c
++++ b/libs/parser/confdata.c
+@@ -831,7 +831,7 @@ next:
+ 			return 1;
+ 	}
+ 
+-	conf_message(_("configuration written to %s"), newname);
++	//conf_message(_("configuration written to %s"), newname);
+ 
+ 	sym_set_change_count(0);
+ 
+-- 
+2.17.1
+

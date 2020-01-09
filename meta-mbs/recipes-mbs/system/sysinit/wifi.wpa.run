@@ -1,0 +1,4 @@
+#!/bin/sh
+pidfile=/var/run/wpa_supplicant.pid
+
+echo "$pidfile" > pidfile
