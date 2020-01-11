@@ -1,0 +1,12 @@
+#!/bin/sh
+data=/media/data
+keydir=/var/lib/dropbear
+
+mkdir -p $data/config/dropbear
+if [ -d $data/config/dropbear ]; then
+  keydir=$data/config/dropbear
+fi
+if ! [ -f $keydir/dropbear_rsa_host_key ]; then
+  dropbearkey -t rsa -f $keydir/dropbear_rsa_host_key >/dev/null
+fi
+exec dropbear -r $keydir/dropbear_rsa_host_key -F -B

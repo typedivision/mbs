@@ -10,10 +10,11 @@ SRC_URI = " \
     file://wifi.wpa.setup \
     file://wifi.wpa.run \
     file://wifi.dhcp.run \
+    file://dropbear.run \
 "
 
 do_install () {
-    for svc in klogd syslogd network wifi.wpa wifi.dhcp; do
+    for svc in klogd syslogd network wifi.wpa wifi.dhcp dropbear; do
         install -Dm755 ${WORKDIR}/$svc.run ${D}${sysconfdir}/neoinit/$svc/run
     done
     install -Dm755 ${WORKDIR}/wifi.wpa.setup ${D}${sysconfdir}/neoinit/wifi.wpa/setup
@@ -26,7 +27,8 @@ do_install () {
 
 pkg_postinst_${PN} () {
 #!/bin/sh -e
-echo "syslogd" >> $D/etc/neoinit/default.sys/depends
-echo "network" >> $D/etc/neoinit/default.sys/depends
-echo "wifi"    >> $D/etc/neoinit/default.sys/depends
+echo "syslogd"  >> $D/etc/neoinit/default.sys/depends
+echo "network"  >> $D/etc/neoinit/default.sys/depends
+echo "wifi"     >> $D/etc/neoinit/default.sys/depends
+echo "dropbear" >> $D/etc/neoinit/default.sys/depends
 }

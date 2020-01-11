@@ -4,6 +4,10 @@ mount -t sysfs sysfs /sys -o nosuid,noexec,nodev
 if ! [ -e /dev/null ]; then
   mount -t devtmpfs devtmpfs /dev -o nosuid,noexec
 fi
+if ! [ -d /dev/pts ]; then
+  mkdir /dev/pts
+  mount -t devpts devpts /dev/pts
+fi
 
 mount -a
 mount -o ro LABEL=BOOT /boot

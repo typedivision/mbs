@@ -18,6 +18,7 @@ CORE_IMAGE_BASE_INSTALL = " \
     linux-firmware-rpidistro-bcm43430 \
     wpa-supplicant \
     wpa-supplicant-passphrase \
+    dropbear \
     sysinit \
     sysconfig \
 "
