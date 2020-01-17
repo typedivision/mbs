@@ -1,0 +1,19 @@
+#!/bin/sh
+# system restart service
+
+# shut down services
+neorc -l | while read svc; do
+  [ "$svc" = reboot ] && continue
+  neorc -d "$svc"
+done
+
+# send sigterm to all processes
+/bin/killall5 -15
+
+# send sighup to all processes
+/bin/killall5 -1
+
+sync
+umount -a || { sleep 3; sync; umount -a; }
+
+exec /sbin/hard-reboot RESTART

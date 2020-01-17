@@ -4,12 +4,13 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 
 SRC_URI = " \
-  git://github.com/typedivision/${BPN}.git;branch=v${PV} \
-  file://sysinit.run \
-  file://getty.run \
+    git://github.com/typedivision/${BPN}.git;branch=v${PV} \
+    file://sysinit.run \
+    file://getty.run \
+    file://reboot.run \
 "
 
-SRCREV = "a499aeb3fef37b850fdde354d92b9f0d309667cb"
+SRCREV = "2a5d8bc2c992868fc2d62d7432e51d506b6d526a"
 
 S = "${WORKDIR}/git"
 
@@ -19,6 +20,7 @@ do_compile () {
 
 do_install () {
     make DESTDIR=${D} install-files
+    install -m755 killall5 ${D}/bin/killall5
     rm -rf ${D}/usr
 
     install -d ${D}/etc/neoinit/boot
@@ -38,6 +40,8 @@ do_install () {
     install -Dm755 ${WORKDIR}/getty.run ${D}/etc/neoinit/getty/run
     touch ${D}/etc/neoinit/getty/respawn
     echo "getty" >> ${D}/etc/neoinit/default.usr/depends
+
+    install -Dm755 ${WORKDIR}/reboot.run ${D}/etc/neoinit/reboot/run
 
     ln -s /sbin/neoinit ${D}/sbin/init
 }
